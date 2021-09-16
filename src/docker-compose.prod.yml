@@ -1,0 +1,57 @@
+version: '2'
+
+services:
+  dargomdb_prod:
+    container_name: dargomdb_prod
+    restart: always
+    image: postgres:12.2
+    environment:
+      POSTGRES_DB: db_dargom_prod
+      POSTGRES_USER: dargomuser_prod
+      POSTGRES_PASSWORD: dargompass_prod
+    networks:
+      - dargom-network
+    volumes:
+        - dargomdata:/var/lib/postgresql/dargomdata/
+
+  dargomweb_prod:
+    container_name: dargomweb_prod
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    command: gunicorn config.wsgi:application --bind 0.0.0.0:2525
+    volumes:
+      - static_volume_dargom:/home/app/web/static
+      - media_volume_dargom:/home/app/web/media
+    networks:
+      - dargom-network
+    depends_on:
+      - dargomdb_prod
+    ports:
+      - "2525:2525"
+    env_file:
+      - ./.env.prod
+
+  dargomnginx:
+    container_name: dargom-nginx
+    restart: always
+    build: ./nginx
+    volumes:
+      - static_volume_dargom:/home/app/web/static
+      - media_volume_dargom:/home/app/web/media
+    ports:
+      - "4747:4747"
+    networks:
+      - dargom-network
+    depends_on:
+      - dargomweb_prod
+
+volumes:
+  dargomdata:
+  static_volume_dargom:
+  media_volume_dargom:
+
+networks:
+  dargom-network:
+    driver: bridge

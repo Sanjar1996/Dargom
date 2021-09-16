@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  dargomdb:
+    container_name: dargomdb
+    image: postgres
+    environment:
+      POSTGRES_DB: db_dargom
+      POSTGRES_USER: dargomuser
+      POSTGRES_PASSWORD: dargompass
+    volumes:
+      - postgres_data:/var/lib/postgresql/datadargom/
+    ports:
+      - "5432:5432"
+  dargomweb:
+    container_name: dargom
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - dargomdb
+    env_file:
+      - ./.env.dev
+
+volumes:
+  postgres_data:
