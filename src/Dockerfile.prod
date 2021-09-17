@@ -63,4 +63,3 @@ RUN chown -R ${user}:${group} $APP_HOME
 # RUN django-admin compilemessages
 RUN python manage.py migrate
 RUN ["chmod", "+x", "/home/app/web/entrypoint.prod.sh"]
-a
