@@ -41,7 +41,7 @@
               </div>
             </div>
           </div>
-        {% endfor %}  
+        {% endfor %}
         {% comment %} Paginatiom started {% endcomment %}
         <div class="pagination">
          <span class="step-links">
@@ -51,7 +51,7 @@
             {% endif %}
 
             <span class="current">
-                saxifa {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                saxifa {{ page_obj.number }} dan {{ page_obj.paginator.num_pages }}.
             </span>
               {% if page_obj.has_next %}
                   <a href="?page={{ page_obj.next_page_number }}">keyingi</a>
@@ -84,7 +84,7 @@
           </div>
         {% endfor %}
         </div>
-        
+
       </div>
       <center><a href="{% static '/Ижара ставкалари.xlsx' %}" class="get-started-btn">Barchasini ko'rish</a></center>
     </section><!-- End Pricing Section -->
