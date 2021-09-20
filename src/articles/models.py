@@ -36,7 +36,7 @@ class MainSiteModels(models.Model):
     title = models.CharField(max_length=100)
     body = RichTextField()
     youtube_silka = models.CharField(max_length=100, blank=True)
-    # video = models.FileField(upload_to='upload/', blank=True)
+    video = models.FileField(upload_to='upload/', blank=True)
     icon = models.CharField(max_length=150, blank=True)
 
     def __str__(self):
