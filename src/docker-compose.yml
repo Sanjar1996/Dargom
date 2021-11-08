@@ -1,19 +1,19 @@
 version: '3'
 
 services:
-  dargomdb:
-    container_name: dargomdb
+  oqdaryodb:
+    container_name: oqdaryodb
     image: postgres
     environment:
-      POSTGRES_DB: db_dargom
-      POSTGRES_USER: dargomuser
-      POSTGRES_PASSWORD: dargompass
+      POSTGRES_DB: db_oqdaryo
+      POSTGRES_USER: oqdaryouser
+      POSTGRES_PASSWORD: oqdaryopass
     volumes:
-      - postgres_data:/var/lib/postgresql/datadargom/
+      - postgres_data:/var/lib/postgresql/dataoqdaryo/
     ports:
       - "5432:5432"
-  dargomweb:
-    container_name: dargom
+  oqdaryoweb:
+    container_name: oqdaryo
     build: .
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
@@ -21,7 +21,7 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - dargomdb
+      - oqdaryodb
     env_file:
       - ./.env.dev
 
