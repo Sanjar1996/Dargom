@@ -1,57 +1,57 @@
 version: '2'
 
 services:
-  dargomdb_prod:
-    container_name: dargomdb_prod
+  oqdaryodb_prod:
+    container_name: oqdaryodb_prod
     restart: always
     image: postgres:12.2
     environment:
-      POSTGRES_DB: db_dargom_prod
-      POSTGRES_USER: dargomuser_prod
-      POSTGRES_PASSWORD: dargompass_prod
+      POSTGRES_DB: db_oqdaryo_prod
+      POSTGRES_USER: oqdaryouser_prod
+      POSTGRES_PASSWORD: oqdaryopass_prod
     networks:
-      - dargom-network
+      - oqdaryo-network
     volumes:
-        - dargomdata:/var/lib/postgresql/dargomdata/
+        - oqdaryodata:/var/lib/postgresql/oqdaryodata/
 
-  dargomweb_prod:
-    container_name: dargomweb_prod
+  oqdaryoweb_prod:
+    container_name: oqdaryoweb_prod
     restart: always
     build:
       context: .
       dockerfile: Dockerfile.prod
-    command: gunicorn config.wsgi:application --bind 0.0.0.0:2525
+    command: gunicorn config.wsgi:application --bind 0.0.0.0:2323
     volumes:
-      - static_volume_dargom:/home/app/web/static
-      - media_volume_dargom:/home/app/web/media
+      - static_volume_oqdaryo:/home/app/web/static
+      - media_volume_oqdaryo:/home/app/web/media
     networks:
-      - dargom-network
+      - oqdaryo-network
     depends_on:
-      - dargomdb_prod
+      - oqdaryodb_prod
     ports:
-      - "2525:2525"
+      - "2323:2323"
     env_file:
       - ./.env.prod
 
-  dargomnginx:
-    container_name: dargom-nginx
+  oqdaryonginx:
+    container_name: oqdaryo-nginx
     restart: always
     build: ./nginx
     volumes:
-      - static_volume_dargom:/home/app/web/static
-      - media_volume_dargom:/home/app/web/media
+      - static_volume_oqdaryo:/home/app/web/static
+      - media_volume_oqdaryo:/home/app/web/media
     ports:
-      - "4747:4747"
+      - "4343:4343"
     networks:
-      - dargom-network
+      - oqdaryo-network
     depends_on:
-      - dargomweb_prod
+      - oqdaryoweb_prod
 
 volumes:
-  dargomdata:
-  static_volume_dargom:
-  media_volume_dargom:
+  oqdaryodata:
+  static_volume_oqdaryo:
+  media_volume_oqdaryo:
 
 networks:
-  dargom-network:
+  oqdaryo-network:
     driver: bridge
